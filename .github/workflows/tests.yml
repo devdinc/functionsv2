@@ -66,6 +66,7 @@ jobs:
             if [[ -f "$dir/package.txt" ]]; then
               while IFS= read -r dep_line; do
                 dep_line="${dep_line#packages:}"
+                dep_line="${dep_line//,/ }"
                 for dependency in $dep_line; do
                   install_package "$dependency"
                 done
@@ -76,6 +77,7 @@ jobs:
           install_package https://github.com/devdinc/runtime-test-framework
           while IFS= read -r dep_line; do
             dep_line="${dep_line#packages:}"
+            dep_line="${dep_line//,/ }"
             for dependency in $dep_line; do
               install_package "$dependency"
             done
