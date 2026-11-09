@@ -61,7 +61,9 @@ jobs:
             [[ -d "$dir/.git" ]] && return 0
             git clone --depth 1 "$repo_url" "$dir"
             if [[ -d "$dir/src" ]]; then
-              rsync -av "$dir/src/" tests/0_scripts/
+              while IFS= read -r -d '' source_file; do
+              cp "$source_file" "tests/0_scripts/!$(basename "$source_file")"
+            done < <(find "$dir/src" -type f -print0 | sort -z)
             fi
             if [[ -f "$dir/package.txt" ]]; then
               while IFS= read -r dep_line; do
